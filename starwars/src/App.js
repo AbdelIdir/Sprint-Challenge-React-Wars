@@ -14,13 +14,14 @@ import Character from "./components/Character";
   // side effect in a component, you want to think about which state and/or props it should
   // sync up with, if any.
 
-  const App = () => {
-   const [chars, setChars] = useState ();
+
+  
+  function App () {
+   const [chars, setChars] = useState ([]);
    useEffect(() => {
-       axios
-       .get(`https://swapi.co/api/people/?pages`)
-       .then(res => {
-           const results = res.data.results
+       axios.get("https://swapi.co/api/people/")
+       .then(responseApi => {
+           const res = responseApi.data.results
            console.log(res);
            setChars(res);
        })
@@ -29,10 +30,12 @@ return (
    <div>
        
        
+
+
            {chars.map(item=>{
                return(
                    <Character
-                   name={item.name}
+                   name ={item.name}
                    height={item.height}
                    gender={item.gender}
                    mass={item.mass}

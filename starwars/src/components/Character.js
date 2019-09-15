@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-
 const StyleC1 = styled.div`
   background: rgba(0, 0, 0, 0.5);
   color: black;
@@ -19,7 +18,7 @@ function Character(props) {
   const { CharacterObject } = props;
   console.log(CharacterObject);
   return (
-    <StyleC1>
+    <StyleC1 >
       <p onClick={handleClick} >Name : {CharacterObject.name} </p>
       <p>
         {" "}

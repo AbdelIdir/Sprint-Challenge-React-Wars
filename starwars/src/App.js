@@ -10,6 +10,11 @@ import styled from "styled-components";
 // Fetch characters from the star wars api in an effect hook. Remember, anytime you have a
 // side effect in a component, you want to think about which state and/or props it should
 // sync up with, if any.
+const Footertry = styled.footer`
+background: blue;
+color: white;
+height: 20px;
+`
 
 const StyleApp = styled.div`
   display: flex;
@@ -25,6 +30,8 @@ function App() {
   
   const [error, setError] = useState();
   const [chars, setChars] = useState([]);
+  const [count, setCount] = useState(0);
+
   useEffect(() => {
     axios
       .get("https://swapi.co/api/people/")
@@ -40,13 +47,20 @@ function App() {
         );
       });
   }, []);
+
+
+  useEffect(() => {
+    // Update the document title using the browser API
+    document.title = `You reloaded ${count} times`;
+  });
   return (
-    <StyleApp  >
+    <StyleApp   >
       {error}
     
       {chars.map((item, index) => {
         return (
           <Character
+          
             key={index}
             CharacterObject={item}
 
@@ -58,7 +72,12 @@ function App() {
           />
         );
       })}
-    </StyleApp>
+           <Footertry onClick={() => setCount(count + 1)}>Click here</Footertry>
+
+    </StyleApp>     
+
+    
+    
   );
 }
 

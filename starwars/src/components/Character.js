@@ -12,11 +12,15 @@ const StyleC1 = styled.div`
 `;
 
 function Character(props) {
+     function handleClick() {
+          
+          alert("The Character's name was clicked .");
+        }
   const { CharacterObject } = props;
   console.log(CharacterObject);
   return (
     <StyleC1>
-      <p>Name : {CharacterObject.name} </p>
+      <p onClick={handleClick} >Name : {CharacterObject.name} </p>
       <p>
         {" "}
         Height :{" "}

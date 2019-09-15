@@ -21,6 +21,11 @@ const StyleApp = styled.div`
 `;
 
 function App() {
+  function handle() {
+          
+    alert("The Character's name was clicked .");
+  }
+  
   const [error, setError] = useState();
   const [chars, setChars] = useState([]);
   useEffect(() => {
@@ -39,9 +44,9 @@ function App() {
       });
   }, []);
   return (
-    <StyleApp>
+    <StyleApp  >
       {error}
-
+    
       {chars.map((item, index) => {
         return (
           <Character

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
@@ -15,12 +14,29 @@ import styled from "styled-components";
 function App() {
   const [error, setError] = useState();
   const [chars, setChars] = useState([]);
-  const [count, setCount] = useState(0);
+  // const [count, setCount] = useState(0);
   const [backgroundColor, setBackgroundColor] = useState("blue");
-
+  const [page, setPage] = useState("");
+  const [mainApi, setMainApi] = useState("https://swapi.co/api/people/");
   const Footertry = styled.footer`
     background: ${backgroundColor};
     color: white;
+    height: 40px;
+    width: 40px;
+    padding: 20px;
+  `;
+
+  const Next = styled.footer`
+    background: green;
+    color: white;
+    height: 40px;
+    width: 40px;
+    padding: 20px;
+  `;
+
+  const Previous = styled.footer`
+    background: yellow;
+    color: black;
     height: 40px;
     width: 40px;
     padding: 20px;
@@ -37,9 +53,12 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("https://swapi.co/api/people/")
+      .get(mainApi)
       .then(responseApi => {
-        const res = responseApi.data.results;
+        let pagesystem = responseApi.data;
+        setPage(pagesystem);
+        console.log("main page", responseApi.data);
+        let res = responseApi.data.results;
         console.log(res);
         setChars(res);
       })
@@ -49,7 +68,7 @@ function App() {
             alert("something must be wrong with the API link,or axios request")
         );
       });
-  }, []);
+  }, [mainApi]);
 
   // document.title = `You reloaded ${count} times`;
 
@@ -63,6 +82,8 @@ function App() {
       <Footertry onClick={() => setBackgroundColor("purple")}>
         Click here
       </Footertry>
+      <Next onClick={() => setMainApi(page.next)}>Next</Next>
+      <Previous onClick={() => setMainApi(page.previous)}>Previous</Previous>
     </StyleApp>
   );
 }

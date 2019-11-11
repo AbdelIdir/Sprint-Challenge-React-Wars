@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
-import Character from "./components/Character";
+import Cards from "./components/cards";
 import styled from "styled-components";
 
 // Try to think through what state you'll need for this app before starting. Then build out
@@ -10,33 +10,55 @@ import styled from "styled-components";
 // Fetch characters from the star wars api in an effect hook. Remember, anytime you have a
 // side effect in a component, you want to think about which state and/or props it should
 // sync up with, if any.
-const Footertry = styled.footer`
-background: blue;
-color: white;
-height: 20px;
-`
-
-const StyleApp = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  color: black;
-  border: 5px solid black;
-  height: 100%;
-`;
 
 function App() {
-  
-  
   const [error, setError] = useState();
   const [chars, setChars] = useState([]);
-  const [count, setCount] = useState(0);
+  // const [count, setCount] = useState(0);
+  const [backgroundColor, setBackgroundColor] = useState("blue");
+  const [page, setPage] = useState("");
+  const [mainApi, setMainApi] = useState("https://swapi.co/api/people/");
+  const Footertry = styled.footer`
+    background: ${backgroundColor};
+    color: white;
+    height: 40px;
+    width: 40px;
+    padding: 20px;
+  `;
+
+  const Next = styled.footer`
+    background: green;
+    color: white;
+    height: 40px;
+    width: 40px;
+    padding: 20px;
+  `;
+
+  const Previous = styled.footer`
+    background: yellow;
+    color: black;
+    height: 40px;
+    width: 40px;
+    padding: 20px;
+  `;
+
+  const StyleApp = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    color: black;
+    border: 15px solid ${backgroundColor};
+    height: 100%;
+  `;
 
   useEffect(() => {
     axios
-      .get("https://swapi.co/api/people/")
+      .get(mainApi)
       .then(responseApi => {
-        const res = responseApi.data.results;
+        let pagesystem = responseApi.data;
+        setPage(pagesystem);
+        console.log("main page", responseApi.data);
+        let res = responseApi.data.results;
         console.log(res);
         setChars(res);
       })
@@ -46,50 +68,24 @@ function App() {
             alert("something must be wrong with the API link,or axios request")
         );
       });
-  }, []);
+  }, [mainApi]);
 
+  // document.title = `You reloaded ${count} times`;
 
-  useEffect(() => {
-    // Update the document title using the browser API
-    document.title = `You reloaded ${count} times`;
-  });
   return (
-    <StyleApp   >
+    <StyleApp>
       {error}
-    
+
       {chars.map((item, index) => {
-        return (
-          <Character
-          
-            key={index}
-            CharacterObject={item}
-
-            //  name ={item.name}
-            //  height={item.height}
-            //  gender={item.gender}
-            //  mass={item.mass}
-            //  skinCo={item.skin_color}
-          />
-        );
+        return <Cards key={index} CharacterObject={item} />;
       })}
-           <Footertry onClick={() => setCount(count + 1)}>Click here</Footertry>
-
-    </StyleApp>     
-
-    
-    
+      <Footertry onClick={() => setBackgroundColor("purple")}>
+        Click here
+      </Footertry>
+      <Next onClick={() => setMainApi(page.next)}>Next</Next>
+      <Previous onClick={() => setMainApi(page.previous)}>Previous</Previous>
+    </StyleApp>
   );
 }
 
 export default App;
-
-// return(
-//   <Character
-//   key = {index}
-// CharacterObject={item}
-//   />
-// )
-// })}
-// </StyleApp>
-
-// If I use this,Ill have to change  ittem to characterobject withint const{}= props
